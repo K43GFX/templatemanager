@@ -14,13 +14,16 @@
   	<!-- End Top Nav Search -->
     <!-- Sidebar Menu -->
 <ul id="slide-out" class="side-nav fixed">
-    <li><div class="user-view">
-      <div class="background">
-        <img src="">
-      </div>
-      <p><%= current_user.email %></p>
-      <%= link_to "Log out", destroy_user_session_path, method: "delete" %>
-    </div></li>
+	        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header"><%= current_user.email %><i class="material-icons">arrow_drop_down</i></a>
+            <div class="collapsible-body">
+              <ul style="background-color: #263238;">
+                <li><%= link_to "Log out", destroy_user_session_path, method: "delete" %></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
     <li><a class="subheader">Virtual Machines</a></li>
     <li><a href="<%= machines_path %>"><i class="material-icons">storage</i>All Machines</a></li>
     <li><a href="#!"><i class="material-icons">widgets</i>Template VMs</a></li>

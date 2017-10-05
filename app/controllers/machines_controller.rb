@@ -4,8 +4,10 @@ class MachinesController < ApplicationController
   # GET /machines
   # GET /machines.json
   def index
-    Machine.discover
-    @machines = Machine.all
+    VM.discover
+
+    #@machines = Machine.where(active: true)
+    @machines = VM.all
     #puts @machines
   end
 
@@ -49,24 +51,24 @@ class MachinesController < ApplicationController
 
   # Attempts to set the state for Virtual Machine
   def setstate
-    vm = Machine.find(params[:id])
+    vm = VM.find(params[:id])
 
-    if vm.status == "running"
+    if vm.state == "running"
       newstate = "poweroff"
     else
       newstate = "running"
     end
 
     # Change machine's state
-    logger.info "#{vm.name}: changing VM state to #{newstate}"
+    logger.info "#{vm.identifier}: changing VM state to #{newstate}"
     vm.set_state(newstate)
 
     logger.info "#{vm.identifier}: updating machine's information"
-    vm.requery()
+    vm.get_vm_data
 
-    vm.activities.create(action: "State changed to: #{newstate}", date: Time.now, initiated_by: "Karl Erik")
+    vm.activities.create(action: "State changed to: #{newstate}", date: Time.now, initiated_by: current_user.email )
 
-    @machine = Machine.find(params[:id])
+    @machine = VM.find(params[:id])
 
     respond_to do |format|
       format.js

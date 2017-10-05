@@ -18,7 +18,7 @@
         <% @activities.each do |activity| %>
           <tr>
             <td><%= activity.date %></td>
-            <td><%= activity.machine.identifier %></td>
+            <td><%= activity.VM.identifier %></td>
             <td><%= activity.action %></td>
             <td><%= activity.initiated_by %></td>
           </tr>
