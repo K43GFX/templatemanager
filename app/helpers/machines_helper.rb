@@ -25,9 +25,13 @@ module MachinesHelper
 
 	# Shows the last update time of VM
 	# @param [DateTime] time last VM update time
-	def timescale(time)
+	def timescale(time, identifier)
 		if time.today?
-			" Last checked Today at #{time.in_time_zone("Europe/Tallinn").to_s(:time)}".html_safe
+			# " Last checked Today at #{time.in_time_zone("Europe/Tallinn").to_s(:time)}".html_safe
+			"<span id='#{identifier}-count-up'>0:00</span>".html_safe
 		end
+
+
+
 	end
 end

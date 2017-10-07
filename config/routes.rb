@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   patch 'setup/api', :to => 'setup#apiupdate'
   patch 'setup/lock', :to => 'setup#lock'
 
+  post 'machines/refresh_dashboard_vm', :to => 'machines#refresh_dashboard_vm'
   resources :machines
 
   root 'machines#index'

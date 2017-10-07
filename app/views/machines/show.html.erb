@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 <div class="card-panel">
 <h4><%= @machine.identifier %></h4>
-<p>Status: <%= @machine.status %></p>
+<p>Status: <%= @machine.state %></p>
 </div>
 <%= link_to 'Edit', edit_machine_path(@machine) %> |
 <%= link_to 'Back', machines_path %>

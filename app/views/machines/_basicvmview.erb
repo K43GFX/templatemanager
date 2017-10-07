@@ -1,3 +1,31 @@
+  <script>
+    var <%= (vm.identifier).tr('-', '') %> = new Timer();
+
+    <%= (vm.identifier).tr('-', '') %>.start();
+
+    <%= (vm.identifier).tr('-', '') %>.addEventListener('secondsUpdated', function (e) {
+
+    if((<%= (vm.identifier).tr('-', '') %>.getTotalTimeValues().seconds) <= 2) {
+      $('#<%= (vm.identifier).tr('-', '') %>-counter').html('updated just now');
+    } else if((<%= (vm.identifier).tr('-', '') %>.getTotalTimeValues().seconds) >= 14) {
+      //alert("fcuk");
+      <%= (vm.identifier).tr('-', '') %>.stop();
+      <%= (vm.identifier).tr('-', '') %>.reset();
+      refreshPartial('<%= vm.identifier %>');
+    } else {
+      $('#<%= (vm.identifier).tr('-', '') %>-counter').html('last update: ' + <%= (vm.identifier).tr('-', '') %>.getTimeValues().seconds.toString() + "s ago");
+    };
+});
+
+  function refreshPartial(identifier) {
+    $.ajax({
+      url: "<%= machines_refresh_dashboard_vm_path %>",
+      type: "POST",
+      data: { identifier: identifier },
+    });
+  };
+
+  </script>
   <div class="collection">
     <div class="collection-item avatar">
     <div class="row">
@@ -5,7 +33,7 @@
       <i class="material-icons vm-icon"><span style="<%= statecolor(vm.state) %>">laptop</span></i>
       <span class="title"><%= vm.identifier %></span>
       <p>Status: <%= vm.state %> <br>
-         <i class="material-icons" style="color: green; font-size: 14px;">check_circle</i><span style="color: gray;"><%= timescale(vm.last_updated) %></span>
+         <!--<i class="material-icons" style="color: green; font-size: 14px;">check_circle</i>--><span style="color: gray;" id="<%= (vm.identifier).tr('-', '') %>-counter">updated just now</span>
       </p>
       </div>
       <div class="col s4 center-align" style="">
@@ -14,7 +42,7 @@
         <!-- <i class="material-icons" style="color: black; font-size: 50px;">settings_power</i> -->
         <!-- <a class="actionbutton"><i class="material-icons" style="border-radius: 100%; border: 2px solid grey; font-size: 40px; color: gray;">power_settings_new</i></a> -->
         <%= link_to '<i class="material-icons">power_settings_new</i>'.html_safe, set_machine_state_path(id: vm.id), method: :put, remote: true, class: 'btn-floating btn-large waves-effect waves-light gray' %>
-        <%= link_to '<i class="material-icons">power_settings_new</i>'.html_safe, set_machine_state_path(id: vm.id), method: :put, remote: true, class: 'btn-floating btn-large waves-effect waves-light grey' %>
+        <%= link_to '<i class="material-icons">more_vert</i>'.html_safe, machine_path(vm), class: 'btn-floating btn-large waves-effect waves-light grey' %>
       </div>
       </div>
       </div>

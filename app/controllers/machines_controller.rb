@@ -18,7 +18,7 @@ class MachinesController < ApplicationController
 
   # GET /machines/new
   def new
-    @machine = Machine.new
+    @machine = VM.new
   end
 
   # GET /machines/1/edit
@@ -28,7 +28,7 @@ class MachinesController < ApplicationController
   # POST /machines
   # POST /machines.json
   def create
-    @machine = Machine.new(machine_params)
+    @machine = VM.new(machine_params)
 
     respond_to do |format|
       if @machine.save
@@ -49,6 +49,17 @@ class MachinesController < ApplicationController
     end
   end
 
+  def refresh_dashboard_vm
+    puts "Hey there, I WAS REACHED!"
+
+    @machine = VM.find_by(identifier: params[:identifier])
+    puts @machine.identifier
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # Attempts to set the state for Virtual Machine
   def setstate
     vm = VM.find(params[:id])
@@ -63,8 +74,8 @@ class MachinesController < ApplicationController
     logger.info "#{vm.identifier}: changing VM state to #{newstate}"
     vm.set_state(newstate)
 
-    logger.info "#{vm.identifier}: updating machine's information"
-    vm.get_vm_data
+    #logger.info "#{vm.identifier}: updating machine's information"
+    #vm.get_vm_data
 
     vm.activities.create(action: "State changed to: #{newstate}", date: Time.now, initiated_by: current_user.email )
 
@@ -129,7 +140,7 @@ class MachinesController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_machine
-      @machine = Machine.find(params[:id])
+      @machine = VM.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

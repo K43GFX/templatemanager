@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require materialize-sprockets
+//=require easytimer
 $(document).on('turbolinks:load', function() {
   $('.button-collapse').sideNav({
       menuWidth: 300,

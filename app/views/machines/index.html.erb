@@ -2,7 +2,7 @@
 <div class="row">
 <% machines.each do |vm| %>
   <div class="col s6">
-    <div class="vm <%= vm.identifier %>">
+    <div class="vm" id="<%= vm.identifier %>">
   <%= render partial: "basicvmview", locals: { vm: vm }%>
     </div>
   </div>
