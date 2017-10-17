@@ -8,9 +8,11 @@ class VM
   after_find :get_vm_data
 
   has_many :activities
+  has_many :snapshots
   
   field :identifier, type: String
   field :last_updated, type: DateTime
+  field :purpose, type: String
 
 
   @@apiserver = "http://#{Setting.first.apiserver}:#{Setting.first.apiport}"
@@ -31,7 +33,13 @@ class VM
   	json.each do |vm|
 
       unless self.where(identifier: vm["id"]).exists?
-        self.create(identifier: vm["id"])
+        if vm['id'].include? "template"
+          purpose = "template"
+        else
+          purpose = "basic"
+        end
+
+        self.create(identifier: vm["id"], purpose: purpose)
         puts "#{vm["id"]}: added to database"
       else
         puts "#{vm["id"]}: already in system."
@@ -56,8 +64,16 @@ class VM
   		end
 
   		if vm.key? "snapshot"
-  			self["snapshot"] = vm["snapshot"]
+  			self["snap"] = vm["snapshot"]
   		end
+
+      if vm.key? "qaversion"
+        self["qa"] = vm["qaversion"]
+      end
+
+      if vm.key? "ipv4"
+        self["ipv4"] = vm["ipv4"]
+      end
 
       self.last_updated = Time.now
   	else

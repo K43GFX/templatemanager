@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :activities
   resources :settings
   resources :errors
+  resources :snapshots
 
   # Route for API error(s)
   get 'error/api_not_found'
@@ -17,6 +18,8 @@ Rails.application.routes.draw do
   get 'setup/master', :to => 'setup#createmaster'
   get 'setup/locked', :to => 'setup#locked'
 
+  post 'snapshots/new_snapshot', :to => 'snapshots#new_snapshot'
+  delete 'snapshots/destroymultiple', :to => 'snapshots#destroymultiple'
   # Routes for Setup actions
   patch 'setup/rdp', :to => 'setup#rdpinitialize'
   patch 'setup/master', :to => 'setup#masterinitialize'
@@ -24,6 +27,7 @@ Rails.application.routes.draw do
   patch 'setup/api', :to => 'setup#apiupdate'
   patch 'setup/lock', :to => 'setup#lock'
 
+  post 'machines/no_functionality', :to => 'machines#no_functionality'
   post 'machines/refresh_dashboard_vm', :to => 'machines#refresh_dashboard_vm'
   resources :machines
 

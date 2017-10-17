@@ -25,6 +25,12 @@ class MachinesController < ApplicationController
   def edit
   end
 
+  def no_functionality
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # POST /machines
   # POST /machines.json
   def create
@@ -50,10 +56,7 @@ class MachinesController < ApplicationController
   end
 
   def refresh_dashboard_vm
-    puts "Hey there, I WAS REACHED!"
-
     @machine = VM.find_by(identifier: params[:identifier])
-    puts @machine.identifier
 
     respond_to do |format|
       format.js

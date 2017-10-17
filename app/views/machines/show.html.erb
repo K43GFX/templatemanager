@@ -1,7 +1,96 @@
 <p id="notice"><%= notice %></p>
-<div class="card-panel">
-<h4><%= @machine.identifier %></h4>
-<p>Status: <%= @machine.state %></p>
-</div>
-<%= link_to 'Edit', edit_machine_path(@machine) %> |
-<%= link_to 'Back', machines_path %>
+      <div class="row">
+        <div class="col s12 m6">
+          <div id="machinestats">
+          <%= render 'machinestats', machine: @machine %>
+        </div>
+        </div>
+        <div class="col s12 m6">
+          <div class="card blue-grey darken-1" style="height: 200px;">
+          		<div class="card-content white-text">
+          			<span class="card-title">Quick Access</span>
+                I am just a placeholder. But this section is going to cover most crucial function-shortcuts that lab dev might eventually need.
+                <br>
+                <br>
+                <div class="buttons">
+                  <div class="row">
+                    <div class="col m4 s12">
+                      <%= link_to 'State'.html_safe, set_machine_state_path(id: @machine.id), method: :put, remote: true, class: 'waves-effect waves-light btn left', style: "width: 100%;" %>
+                    </div>
+                    <div class="col m4 s12">
+                      <%= button_to "Snapshot", {controller: "snapshots", :action => "new_snapshot", :vm => @machine.id }, remote: "true", class: 'waves-effect waves-light btn', style: "width: 100%;" %>
+                      </div>
+                    <div class="col m4 s12">
+                      <%= button_to "Clone", { :action => "no_functionality" }, remote: "true", class: 'waves-effect waves-light btn right', style: "width: 100%;" %>
+                      </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col m12">
+        <div class="card blue-grey darken-1 white-text">
+        <div class="card-content">
+          <div class="row">
+            <div class="col m6">
+              <span class="card-title">Snapshots</span>
+            </div>
+            <%= form_tag({ controller: 'snapshots', action: 'destroy', vm: @machine.id }, method: "delete", remote: "true") do %>
+            <div class="col m3">
+            <% unless @machine.snapshots.empty? %>
+            <%= submit_tag "Destroy selected", class: 'waves-effect waves-light btn right orange darken-4', style: "width: 100%;" %>
+            <% end %>
+            </div>
+            <div class="col m3">
+              <%= link_to "New Snapshot", {controller: "snapshots", :action => "new_snapshot", vm: @machine.id }, method: "post",remote: "true", class: 'waves-effect waves-light btn right', style: "width: 100%;" %>
+            </div>
+            </div>
+          <div id="snapshot-full-list">
+            <%= render 'snapshots/machinesnapshots', machine: @machine %>
+          </div>
+          <% end %>
+        </div>
+          </div>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col m12">
+        <div class="card blue-grey darken-1 white-text">
+        <div class="card-content">
+          <div class="row">
+            <div class="col m9">
+              <span class="card-title">Deployed Scripts</span>
+            </div>
+            <div class="col m3">
+              <%= button_to "Deploy Script", { action: 'no_functionality'}, remote: "true", class: 'waves-effect waves-light btn right'%>
+            </div>
+        </div>
+          No scripts are deployed to this machine yet.
+          </div>
+          </div>
+      </div>
+    </div>
+
+      <div class="row">
+        <div class="col m12">
+        <div class="card blue-grey darken-1 white-text">
+        <div class="card-content">
+          <div class="row">
+            <div class="col m10">
+              <span class="card-title">SSH Keys</span>
+            </div>
+            <div class="col m2">
+              <%= button_to "Add Key", {:action => "no_functionality" }, remote: "true", class: 'waves-effect waves-light btn right'%>
+            </div>
+        </div>
+          No SSH keys are added to this machine via Template Manager.
+          </div>
+          </div>
+      </div>
+    </div>
+
+<div class="newsnapshotname"></div>

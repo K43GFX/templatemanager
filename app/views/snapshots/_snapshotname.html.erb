@@ -1,0 +1,19 @@
+
+<div id="snapshotname" class="modal">
+  <%= form_tag({controller: "snapshots", action: "create", vm: @machine}, {id: "snapshotform", remote: "true"}) do %>
+  <div class="modal-content">
+    <h4>Create new snapshot</h4>
+          <div class="row">
+        <div class="input-field col s12">
+          <%= text_field_tag 'name', nil, class: 'active validate', required: "true", placeholder: 'Enter snapshot name' %>
+          <label for="name">New snapshot name</label>
+        </div>
+      </div>
+
+      PS! If machine is running, it will be shut down automatically!
+  </div>
+  <div class="modal-footer">
+    <%= submit_tag("Create snapshot!", class: "modal-action modal-close waves-effect waves-green btn-flat") %>
+  </div>
+  <% end %>
+</div>

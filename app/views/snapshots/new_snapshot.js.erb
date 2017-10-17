@@ -1,0 +1,12 @@
+// Create & load snapshot name modal
+$('.newsnapshotname').html("<%=j render 'snapshotname', :id => @machine %>");
+Materialize.updateTextFields();
+$('#snapshotname').modal();
+$('#snapshotname').modal('open');
+
+// Run after form input verified
+//$( "#snapshotform" ).submit(function( event ) {
+//  $('#snapshotname').modal('hide');
+//  Materialize.toast("Trying to create snapshot");
+//  event.preventDefault();
+//});

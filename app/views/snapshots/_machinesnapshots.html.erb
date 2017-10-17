@@ -1,0 +1,39 @@
+<style>
+  [type="checkbox"] + label:before, [type="checkbox"]:not(.filled-in) + label:after {
+    border: 2px solid white;
+  }
+
+  [type="checkbox"]:checked + label:before {
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+  }
+</style>
+<% unless machine.snapshots.empty? %>
+<table class="">
+  <thead>
+    <tr>
+      <th>Snapshot name</th>
+      <th>Date</th>
+      <th>Previous</th>
+      <th>Created By</th>
+      <th>Select?</th>
+      </tr>
+  </thead>
+  <tbody>
+    <% machine.snapshots.order(date: :desc).each do |snapshot| %>
+    <tr>
+      <td><%= snapshot.nickname %></td>
+      <td><%= snapshot.date %></td>
+      <td><%= snapshot.try(:created_from) || 'N/A' %></td>
+      <td><%= snapshot.author %></td>
+      <td><%= %>
+        <%= check_box_tag "snapshot_ids[#{snapshot.id}]", "snapshot[#{snapshot.id}]", false %>
+      <!--<input type="checkbox" id="<%= snapshot.nickname%>-delete" />-->
+      <label for="snapshot_ids_<%= snapshot.id %>"></label></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+This machine doesn't have any snapshots created by Template Manager
+<% end %>

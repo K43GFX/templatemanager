@@ -1,0 +1,3 @@
+Materialize.toast('<%= @alertmessage %>', 4000);
+$('#snapshot-full-list').html('<%=j render "machinesnapshots", machine: @machine %>');
+$("#machinestats").html("<%=j render 'machines/machinestats', :machine => @machine %>");
