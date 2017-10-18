@@ -58,45 +58,6 @@
       </div>
 
       <div class="row">
-        <div class="col m6" style="width: 50%;">
-          <div class="col m12">
-           <div class="card blue-grey darken-1 white-text">
-            <div class="card-content">
-              <div class="row">
-                <div class="col m9">
-                  <span class="card-title">RDP Access</span>
-                </div>
-                <div class="col m3">
-                  <%= link_to "New User", {controller: "rdps", action: "new_rdp", vm: @machine.id }, method: "post", remote: "true", class: 'waves-effect waves-light btn right', style: "width: 100%;" %>
-                </div>
-              </div>
-              <div class="rdpaccounts">
-                <%= render 'rdps/accounts', machine: @machine %>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-        <div class="col m6" style="width: 50%;">
-          <div class="col m12">
-            <div class="card blue-grey darken-1 white-text">
-              <div class="card-content">
-                <div class="row">
-                  <div class="col m10">
-                    <span class="card-title">SSH Keys</span>
-                  </div>
-                  <div class="col m2">
-                    <%= button_to "Add Key", {:action => "no_functionality" }, remote: "true", class: 'waves-effect waves-light btn right'%>
-                  </div>
-                </div>
-                No SSH keys are added to this machine via Template Manager.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
         <div class="col m12">
         <div class="card blue-grey darken-1 white-text">
         <div class="card-content">
@@ -133,5 +94,3 @@
     </div>
 
 <div class="newsnapshotname"></div>
-<div class="newrdpuser"></div>
-<div class="rdpmodal"></div>

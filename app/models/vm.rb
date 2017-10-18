@@ -9,6 +9,7 @@ class VM
 
   has_many :activities
   has_many :snapshots
+  has_many :rdps
   
   field :identifier, type: String
   field :last_updated, type: DateTime

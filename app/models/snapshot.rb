@@ -43,12 +43,17 @@ class Snapshot
   def blowup?
     puts "#{self.VM.identifier}: deleting snapshot #{self.nickname}"
   	request = Http.delete("#{@@apiserver}/machine/#{self.VM.identifier}/snapshot/#{self.nickname}", {})
+    json = JSON.parse(request.body)
 
-  	if(request.body == "{}")
-      self.destroy
-      return true
-    else
-      return false
+    if json.any?
+      puts json
+      if json.key? 'status'
+        self.destroy
+        return true
+      else
+        self.destroy
+        return false
+      end
     end
 
   end

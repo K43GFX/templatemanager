@@ -1,0 +1,10 @@
+$('.rdpmodal').html("<%=j render 'rdpmodal', command: @command %>");
+$('#rdpmodal').modal();
+$('#rdpmodal').modal('open');
+
+// Run after form input verified
+//$( "#snapshotform" ).submit(function( event ) {
+//  $('#snapshotname').modal('hide');
+//  Materialize.toast("Trying to create snapshot");
+//  event.preventDefault();
+//});

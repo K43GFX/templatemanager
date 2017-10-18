@@ -32,6 +32,7 @@ class SnapshotsController < ApplicationController
         logger.info "#{@machine.identifier}: new snapshot '#{snapshot.nickname}' with UUID '#{createsnapshot}'"
         snapshot.save!
         @alertmessage = "Snapshot created successfully!"
+        @machine.activities.create(action: "Created snapshot: #{snapshot.nickname}", date: Time.now, initiated_by: current_user.email )
       else
         @alertmessage = "Could not create snapshot: Hypervisor error"
       end
@@ -64,6 +65,7 @@ class SnapshotsController < ApplicationController
           end
            if snapshot.blowup?
             logger.info "#{@machine.identifier}: snapshot '#{snapshot.nickname}' deleted"
+            @machine.activities.create(action: "Deleted snapshot: #{snapshot.nickname}", date: Time.now, initiated_by: current_user.email )
             else
             logger.info "#{@machine.identifier}: error when deleting snapshot '#{snapshot.nickname}'"
            end

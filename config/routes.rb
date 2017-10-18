@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   
+  resources :templates
   #scope "/templatemanager"  || "/" do
   devise_for :users
   resources :activities
   resources :settings
   resources :errors
   resources :snapshots
+  resources :rdps
 
   # Route for API error(s)
   get 'error/api_not_found'
@@ -26,6 +28,9 @@ Rails.application.routes.draw do
   post 'setup/master', :to => 'setup#masterinitialize'
   patch 'setup/api', :to => 'setup#apiupdate'
   patch 'setup/lock', :to => 'setup#lock'
+
+  get 'rdps/open_rdp_link', :to => 'rdps#open_rdp_link'
+  post 'rdps/new_rdp', :to => 'rdps#new_rdp'
 
   post 'machines/no_functionality', :to => 'machines#no_functionality'
   post 'machines/refresh_dashboard_vm', :to => 'machines#refresh_dashboard_vm'

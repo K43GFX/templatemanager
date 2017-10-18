@@ -1,0 +1,23 @@
+
+<% unless machine.rdps.empty? %>
+<table class="">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Secret</th>
+      <th></th>
+      </tr>
+  </thead>
+  <tbody>
+    <% machine.rdps.order(id: :desc).each do |account| %>
+    <tr>
+      <td><%= account.rdpuser %></td>
+      <td><%= account.rdpsecret %></td>
+      <td><%= link_to "remove_red_eye", {controller: "rdps", :action => "show", vm: machine.id, account: account.id }, method: "get", remote: "true", class: 'material-icons' %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+This machine doesn't have any RDP accounts created by Template Manager
+<% end %>

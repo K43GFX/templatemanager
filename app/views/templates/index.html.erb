@@ -1,0 +1,20 @@
+<% @machines.where(purpose: "template").in_groups_of(2, false) do |machines| %>
+<div class="row">
+<% machines.each do |vm| %>
+  <div class="col s6">
+    <div class="vm <%= vm.identifier %>">
+  <%= render partial: "machines/basicvmview", locals: { vm: vm }%>
+    </div>
+  </div>
+<% end %> <!-- end of VM -->
+</div>
+<% end %> <!-- end of machine -->
+
+
+<% if @machines.empty? %>
+<div style="text-align: center; padding-top: 5%;">
+<img src='http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-warning-icon.png' width='60px'/>
+<h5>Ouch! Seems like no VMs are deployed.</h5>
+<p>You might want to import some</p>
+</div>
+<% end %>

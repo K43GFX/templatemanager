@@ -1,0 +1,23 @@
+
+<div id="newrdpuser" class="modal">
+  <%= form_tag({controller: "rdps", action: "create", vm: @machine}, {id: "newrdpform", remote: "true"}) do %>
+  <div class="modal-content">
+    <h4>Create new RDP user</h4>
+          <div class="row">
+        <div class="input-field col s12">
+          <%= text_field_tag 'rdpuser', nil, class: 'active validate', required: "true", placeholder: 'Desired RDP Username' %>
+          <label for="name">RDP Username</label>
+        </div>
+        <div class="input-field col s12">
+          <%= text_field_tag 'rdpsecret', nil, class: 'active validate', required: "true", placeholder: 'Desired RDP Secret' %>
+          <label for="name">RDP Secret</label>
+        </div>
+      </div>
+
+      Upon data verification, RDP user is added automatically.
+  </div>
+  <div class="modal-footer">
+    <%= submit_tag("Create user!", class: "modal-action modal-close waves-effect waves-green btn-flat") %>
+  </div>
+  <% end %>
+</div>

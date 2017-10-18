@@ -5,7 +5,7 @@ class ActivitiesController < ApplicationController
   # GET /activities
   # GET /activities.json
   def index
-    @activities = Activity.all
+    @activities = Activity.all.order(id: :desc)
   end
 
   # GET /activities/1
