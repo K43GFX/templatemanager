@@ -9,37 +9,25 @@ class SnapshotsController < ApplicationController
   end
 
   def create
-  	#logger.info "Attempting to create snapshot 'SNAPSHOT' for machine #{@machine.identifier}, which is created by #{current_user.email}"
     if @machine.state == "running"
       @machine.set_state('poweroff')
     end
     
-    snapshot = @machine.snapshots.snapshot.new
-    snapshot.author = current_user.email
-    snapshot.date = Time.now
-    snapshot.nickname = params[:name]
-    snapshot.created_from = @machine.try(:snap)
+    snapshotname = params['name']
+    vm_identifier = @machine.identifier
 
-    if snapshot.valid?
+    created = Snapshot.make(vm_identifier, snapshotname)
 
-      if @machine.state == "running"
-        @machine.set_state('poweroff')
-      end
-
-      createsnapshot = snapshot.make
-      if createsnapshot
-        snapshot.uuid = createsnapshot # returned by Snapshot.make()
-        logger.info "#{@machine.identifier}: new snapshot '#{snapshot.nickname}' with UUID '#{createsnapshot}'"
-        snapshot.save!
-        @alertmessage = "Snapshot created successfully!"
-        @machine.activities.create(action: "Created snapshot: #{snapshot.nickname}", date: Time.now, initiated_by: current_user.email )
-      else
-        @alertmessage = "Could not create snapshot: Hypervisor error"
-      end
+    if created
+      logger.info created
+      @alertmessage = "Snapshot was created"
     else
-      @alertmessage = "Could not create snapshot: name already exists"
+      logger.info created
+      @alertmessage = "Error when creating snapshot"
     end
 
+    @snapshots = Snapshot.discover(@machine.identifier)
+    @vmid = @machine.identifier
     respond_to do |format|
       format.js
     end
@@ -53,36 +41,24 @@ class SnapshotsController < ApplicationController
       if @machine.state == "running"
         @machine.set_state('poweroff')
       end
-      
+    	
       snapshots.each do |snap|
-        
-        snapshot = Snapshot.find(snap)
-
-        unless @machine.snapshots.where(created_from: snapshot.nickname).any?
-          logger.info "#{snapshot.nickname}: not a parent snapshot [DELETE]"
-          if @machine.state == "running"
-            @machine.set_state('poweroff')
-          end
-           if snapshot.blowup?
-            logger.info "#{@machine.identifier}: snapshot '#{snapshot.nickname}' deleted"
-            @machine.activities.create(action: "Deleted snapshot: #{snapshot.nickname}", date: Time.now, initiated_by: current_user.email )
-            else
-            logger.info "#{@machine.identifier}: error when deleting snapshot '#{snapshot.nickname}'"
-           end
-          #parent = @machine.snapshots.where(created_from: snapshot.nickname)
-          #logger.info "Parent of '#{snapshot.nickname}': '#{parent.nickname}' [KEEP]"
+    	 destroyed = Snapshot.destroy(@machine.identifier, snap)
+        if destroyed
+          @alertmessage = "Snapshot is deleted!"
         else
-          logger.info "#{snapshot.nickname}: parent of another snapshot [KEEP]"
-          #logger.info "Parent of '#{snapshot.nickname}': none in tplmgr [DELETE]"
+          @alertmessage = "Error when deleting snapshot!"
         end
 
       end
-      @alertmessage = 'Attempted to delete snapshots. Refresh page.'
+
     else
-      logger.info "No snapshots chosen to be deleted."
-      @alertmessage = 'No snapshots chosen to be deleted.'
+      @alertmessage = "No snapshots are chosen to be deleted!"  
     end
 
+    @snapshots = Snapshot.discover(@machine.identifier)
+    @vmid = @machine.identifier
+    
     respond_to do |format|
       format.js
     end
@@ -97,6 +73,7 @@ class SnapshotsController < ApplicationController
   end
 
   def show
+    @snapshots = Snapshot.discover(@machine.identifier)
   end
 
   def set_vm

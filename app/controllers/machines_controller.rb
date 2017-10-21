@@ -14,6 +14,7 @@ class MachinesController < ApplicationController
   # GET /machines/1
   # GET /machines/1.json
   def show
+    @snapshots = Snapshot.discover(@machine.identifier)
   end
 
   # GET /machines/new

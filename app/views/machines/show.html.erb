@@ -38,9 +38,9 @@
             <div class="col m6">
               <span class="card-title">Snapshots</span>
             </div>
-            <%= form_tag({ controller: 'snapshots', action: 'destroy', vm: @machine.id }, method: "delete", remote: "true") do %>
+            <%= form_tag({ controller: 'snapshots', action: 'destroy', vm: @machine.id }, { id: "snapshotdestroy", method: "delete", remote: "true" } ) do %>
             <div class="col m3">
-            <% unless @machine.snapshots.empty? %>
+            <% unless @snapshots.empty? %>
             <%= submit_tag "Destroy selected", class: 'waves-effect waves-light btn right orange darken-4', style: "width: 100%;" %>
             <% end %>
             </div>
@@ -49,7 +49,7 @@
             </div>
             </div>
           <div id="snapshot-full-list">
-            <%= render 'snapshots/machinesnapshots', machine: @machine %>
+            <%= render 'snapshots/machinesnapshots', vmid: @machine.identifier %>
           </div>
           <% end %>
         </div>
@@ -135,3 +135,10 @@
 <div class="newsnapshotname"></div>
 <div class="newrdpuser"></div>
 <div class="rdpmodal"></div>
+<script>
+  // Run after form input verified
+  $("#snapshotdestroy").submit(function( event ) {
+    Materialize.toast("Attempting to destroy selected snapshots...", 4000);
+    event.preventDefault();
+  });
+</script>

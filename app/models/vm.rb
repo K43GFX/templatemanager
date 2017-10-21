@@ -29,7 +29,7 @@ class VM
   def self.discover
 
   	raw_data = Http.get("#{@@apiserver}/machine/", {})
-  	json = JSON.parse(raw_data.body)
+  	json = JSON.parse(raw_data.body, object_class: OpenStruct)
 
   	json.each do |vm|
 

@@ -8,28 +8,30 @@
     border-right: 2px solid white;
   }
 </style>
-<% unless machine.snapshots.empty? %>
+<% 
+if params.key? 'vmid'
+  vmid = params['vmid']
+end
+snapshots = Snapshot.discover(vmid)
+%>
+<% unless snapshots.empty? %>
 <table class="">
   <thead>
     <tr>
       <th>Snapshot name</th>
-      <th>Date</th>
-      <th>Previous</th>
-      <th>Created By</th>
+      <th>UUID</th>
       <th>Select?</th>
       </tr>
   </thead>
   <tbody>
-    <% machine.snapshots.order(date: :desc).each do |snapshot| %>
+    <% snapshots.reverse.each do |snapshot| %>
     <tr>
-      <td><%= snapshot.nickname %></td>
-      <td><%= snapshot.date %></td>
-      <td><%= snapshot.try(:created_from) || 'N/A' %></td>
-      <td><%= snapshot.author %></td>
+      <td><%= snapshot.name %></td>
+      <td><%= snapshot.uuid %></td>
       <td><%= %>
-        <%= check_box_tag "snapshot_ids[#{snapshot.id}]", "snapshot[#{snapshot.id}]", false %>
+        <%= check_box_tag "snapshot_ids[#{snapshot.uuid}]", "snapshot[#{snapshot.uuid}]", false %>
       <!--<input type="checkbox" id="<%= snapshot.nickname%>-delete" />-->
-      <label for="snapshot_ids_<%= snapshot.id %>"></label></td>
+      <label for="snapshot_ids_<%= snapshot.uuid %>"></label></td>
     </tr>
     <% end %>
   </tbody>

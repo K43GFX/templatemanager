@@ -1,12 +1,7 @@
-# Logfile created on 2017-10-17 15:38:01 +0300 by logger.rb/56815
-I, [2017-10-17T15:47:14.581696 #16659]  INFO -- : 2017-10-17 15:47:14 +0300 UbuntuDesktop16041-template_1: setting state of VM to running
-I, [2017-10-17T15:49:26.607843 #16659]  INFO -- : 2017-10-17 15:49:26 +0300 UbuntuDesktop16041-template_1: setting state of VM to poweroff
-I, [2017-10-17T19:23:02.495373 #23844]  INFO -- : 2017-10-17 19:23:02 +0300 syscomp-kali-template: setting state of VM to poweroff
-I, [2017-10-17T19:23:03.003712 #23844]  INFO -- : 2017-10-17 19:23:03 +0300 syscomp-kali-template: setting state of VM to poweroff
-I, [2017-10-17T19:23:03.753143 #23844]  INFO -- : 2017-10-17 19:23:03 +0300 syscomp-kali-template: setting state of VM to poweroff
-I, [2017-10-17T19:23:04.458964 #23844]  INFO -- : 2017-10-17 19:23:04 +0300 syscomp-kali-template: setting state of VM to poweroff
-I, [2017-10-17T19:23:05.320465 #23844]  INFO -- : 2017-10-17 19:23:05 +0300 syscomp-kali-template: setting state of VM to poweroff
-I, [2017-10-17T19:24:45.728332 #23844]  INFO -- : 2017-10-17 19:24:45 +0300 syscomp-desktop-template: setting state of VM to poweroff
-I, [2017-10-17T19:24:46.162697 #23844]  INFO -- : 2017-10-17 19:24:46 +0300 syscomp-desktop-template: setting state of VM to poweroff
-I, [2017-10-17T20:23:30.293384 #26882]  INFO -- : 2017-10-17 20:23:30 +0300 UbuntuDesktop16041-template_1: setting state of VM to running
-I, [2017-10-17T20:23:43.855059 #26882]  INFO -- : 2017-10-17 20:23:43 +0300 syscomp-desktop-template: setting state of VM to running
+# Logfile created on 2017-10-18 18:41:04 +0300 by logger.rb/56815
+I, [2017-10-19T18:18:38.129314 #2751]  INFO -- : 2017-10-19 18:18:38 +0300 UbuntuDesktop16041-template_2: setting state of VM to running
+I, [2017-10-19T18:43:03.765447 #2751]  INFO -- : 2017-10-19 18:43:03 +0300 syscomp-rdp: setting state of VM to running
+I, [2017-10-19T20:20:49.139947 #25021]  INFO -- : 2017-10-19 20:20:49 +0300 syscomp-rdp: setting state of VM to poweroff
+I, [2017-10-20T15:59:50.885461 #23438]  INFO -- : 2017-10-20 15:59:50 +0300 UbuntuDesktop16041-template_1: setting state of VM to poweroff
+I, [2017-10-21T19:19:57.439446 #17469]  INFO -- : 2017-10-21 19:19:57 +0300 UbuntuDesktop16041-template_1: setting state of VM to running
+I, [2017-10-21T19:26:52.774992 #17469]  INFO -- : 2017-10-21 19:26:52 +0300 UbuntuDesktop16041-template_1: setting state of VM to poweroff

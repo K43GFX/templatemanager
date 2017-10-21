@@ -5,8 +5,7 @@ $('#snapshotname').modal();
 $('#snapshotname').modal('open');
 
 // Run after form input verified
-//$( "#snapshotform" ).submit(function( event ) {
-//  $('#snapshotname').modal('hide');
-//  Materialize.toast("Trying to create snapshot");
-//  event.preventDefault();
-//});
+$("#snapshotform").submit(function( event ) {
+  Materialize.toast("Attempting to create snapshot...", 4000);
+  event.preventDefault();
+});
