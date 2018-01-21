@@ -1,3 +1,5 @@
+<!-- Switch off turbolinks, otherwise update timers won't stop after page redirect -->
+<div data-turbolinks="false">
 <% @machines.in_groups_of(2, false) do |machines| %>
 <div class="row">
 <% machines.each do |vm| %>
@@ -18,3 +20,10 @@
 <p>You might want to import some</p>
 </div>
 <% end %>
+</div>
+<script>
+$("#destroymachine").click(function( event ) {
+  Materialize.toast("Attempting to delete machine", 4000);
+  //event.preventDefault();
+});
+</script>

@@ -12,7 +12,7 @@
 if params.key? 'vmid'
   vmid = params['vmid']
 end
-snapshots = Snapshot.discover(vmid)
+snapshots = Snapshot.discover(vmid).reverse
 %>
 <% unless snapshots.empty? %>
 <table class="">
@@ -24,13 +24,16 @@ snapshots = Snapshot.discover(vmid)
       </tr>
   </thead>
   <tbody>
-    <% snapshots.reverse.each do |snapshot| %>
+    <% snapshots.each do |snapshot| %>
     <tr>
       <td><%= snapshot.name %></td>
       <td><%= snapshot.uuid %></td>
-      <td><%= %>
+      <td>
+        <% unless snapshots.reverse.first == snapshot %>
         <%= check_box_tag "snapshot_ids[#{snapshot.uuid}]", "snapshot[#{snapshot.uuid}]", false %>
-      <!--<input type="checkbox" id="<%= snapshot.nickname%>-delete" />-->
+        <% else %>
+        N/A
+        <% end %>
       <label for="snapshot_ids_<%= snapshot.uuid %>"></label></td>
     </tr>
     <% end %>

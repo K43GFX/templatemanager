@@ -7,7 +7,7 @@ class Snapshot
   def self.discover(identifier)
     request = Http.get("#{@@apiserver}/machine/#{identifier}/snapshots", {})
     unprocessed_json = JSON.parse(request.body)
-
+    
     begin
       if unprocessed_json.key? 'error'
         return []
@@ -33,17 +33,17 @@ class Snapshot
         @uuid = json["uuid"]
         return @uuid
       else
+        puts "Error when creating snapshot: #{json["error"]}"
         return false
       end
     else
       return false
     end
 
-    return false
-
   end
 
   def self.destroy(identifier, uuid)
+
     puts "#{identifier}: deleting snapshot with UUID #{uuid}"
   	request = Http.delete("#{@@apiserver}/machine/#{identifier}/snapshot/#{uuid}", {})
     json = JSON.parse(request.body)
@@ -51,15 +51,17 @@ class Snapshot
     if json.any?
       status = json['status']
       if status == "ok"
+        puts "Snapshot was deleted successfully"
         return true
       else
+        puts "Error when deleting snapshot"
         return false
       end
 
     else
+      puts "Error when deleting snapshot. No JSON response."
       return false
     end
-    return false
   end
 
 end

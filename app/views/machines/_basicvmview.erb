@@ -26,17 +26,18 @@
   };
 
   </script>
+  <% unless vm.error %>
   <div class="collection">
     <div class="collection-item avatar">
     <div class="row">
-    <div class="col s8">
+    <div class="col s7">
       <i class="material-icons vm-icon"><span style="<%= statecolor(vm.state) %>">laptop</span></i>
       <span class="title"><%= vm.identifier %></span>
       <p>Status: <%= vm.state %> <br>
          <!--<i class="material-icons" style="color: green; font-size: 14px;">check_circle</i>--><span style="color: gray;" id="<%= (vm.identifier).tr('-', '') %>-counter">updated just now</span>
       </p>
       </div>
-      <div class="col s4 center-align" style="">
+      <div class="col s5 center-align" style="">
       <!-- <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a> -->
       <div class="options">
         <!-- <i class="material-icons" style="color: black; font-size: 50px;">settings_power</i> -->
@@ -49,3 +50,24 @@
       <div class="row placeholder"></div>
     </div>
   </div>
+  <% else %>
+    <div class="collection">
+    <div class="collection-item avatar">
+    <div class="row">
+    <div class="col s9">
+      <i class="material-icons vm-icon"><span style="color: red;">laptop</span></i>
+      <span class="title"><%= vm.identifier %></span>
+      <p>Status: <%= vm.error %> <br>
+         <!--<i class="material-icons" style="color: green; font-size: 14px;">check_circle</i>--><span style="color: gray;" id="<%= (vm.identifier).tr('-', '') %>-counter">updated just now</span>
+      </p>
+      </div>
+      <div class="col s3 center-align" style="">
+      <!-- <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a> -->
+      <div class="options">
+        <%= link_to '<i class="material-icons">delete</i>'.html_safe, machines_destroyghost_path(vm: vm.id), method: "delete", remote: "true", class: 'btn-floating btn-large waves-effect waves-light grey', id: "destroymachine" %>
+      </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <% end %>

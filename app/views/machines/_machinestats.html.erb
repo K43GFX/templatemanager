@@ -1,3 +1,31 @@
+  <script>
+    var reloadtimer = new Timer();
+
+    reloadtimer.start();
+
+    reloadtimer.addEventListener('secondsUpdated', function (e) {
+
+    if((reloadtimer.getTotalTimeValues().seconds) >= 3) {
+      //alert("fcuk");
+      reloadtimer.stop();
+      reloadtimer.reset();
+      //alert("updating machine <%= machine.identifier %>");
+      refreshVMPartial('<%= machine.identifier %>');
+    };
+});
+
+  function refreshVMPartial(identifier) {
+    $.ajax({
+      url: "<%= machines_refresh_vm_path %>",
+      type: "POST",
+      data: { identifier: identifier },
+    });
+  };
+
+  //alert("initiated");
+  </script>
+
+
           <div class="card blue-grey darken-1" style="height: 200px;">
           		<div class="card-content white-text">
                 <% if machine.purpose == "template" %>
@@ -16,6 +44,6 @@
           			<p>State: <b><%= machine.state %></b></p>
                 <p>IP Address: <b> <%= machine.try(:ipv4) || 'N/A' %></b></p>
           			<p>Last snapshot: <b><%= machine.try(:snap) || 'N/A' %></b></p>
-          			<p>QA version: <b><%= machine.try(:qa) || 'N/A' %></b></p>
+          			<p>GA version: <b><%= machine.try(:qa) || 'N/A' %></b></p>
             	</div>
           </div>

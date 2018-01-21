@@ -1,6 +1,7 @@
 class MachinesController < ApplicationController
   before_action :set_machine, only: [:show, :edit, :update, :destroy]
-  before_action :verify_settings, :authenticate_user!, :verify_api
+  before_action :verify_settings, :authenticate_user!
+  before_action :verify_api, except: [:no_functionality, :refresh_dashboard_vm, :refresh_vm, :destroyghost]
   # GET /machines
   # GET /machines.json
   def index
@@ -64,6 +65,15 @@ class MachinesController < ApplicationController
     end
   end
 
+  def refresh_vm
+    @machine = VM.find_by(identifier: params[:identifier])
+    machine = VM.find_by(identifier: params[:identifier])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # Attempts to set the state for Virtual Machine
   def setstate
     vm = VM.find(params[:id])
@@ -78,9 +88,6 @@ class MachinesController < ApplicationController
     logger.info "#{vm.identifier}: changing VM state to #{newstate}"
     vm.set_state(newstate)
 
-    #logger.info "#{vm.identifier}: updating machine's information"
-    #vm.get_vm_data
-
     vm.activities.create(action: "State changed to: #{newstate}", date: Time.now, initiated_by: current_user.email )
 
     @machine = VM.find(params[:id])
@@ -94,10 +101,32 @@ class MachinesController < ApplicationController
   # DELETE /machines/1
   # DELETE /machines/1.json
   def destroy
-    @machine.destroy
+    vm = VM.find(params[:vm])
+
+    destroyed = vm.blowup
+
     respond_to do |format|
-      format.html { redirect_to machines_url, notice: 'Machine was successfully destroyed.' }
-      format.json { head :no_content }
+      if destroyed
+        if vm.destroy
+          format.html { redirect_to root_path, notice: 'Machine was successfully destroyed' }
+        else
+          format.html { redirect_to root_path, notice: 'Could not destroy machine' }
+        end
+      else
+        format.html { redirect_to root_path, notice: "Could not destroy machine"}
+      end
+    end
+  end
+
+  def destroyghost
+    vm = VM.find(params[:vm])
+
+    respond_to do |format|
+      if vm.destroy
+        format.html { redirect_to root_path, notice: "Machine removed from Dashboard" }
+      else
+        format.html { redirect_to root_path, notice: "Couldn't remove machine from Dashboard" }
+      end
     end
   end
 
@@ -115,28 +144,15 @@ class MachinesController < ApplicationController
     if Setting.first.developermode?
       logger.info "Developer settings activated, bypassing API check"
     else
-
-      begin
-
+        logger.info "Testing backend..."
         host = Setting.first.apiserver
         port = Setting.first.apiport
 
-        uri = URI.parse("http://#{host}:#{port}")
-
-        Net::HTTP.start(host, port) do |http|
-          http.read_timeout = 2
-          request = Net::HTTP::Get.new uri
-          response = http.request request # Net::HTTPResponse object
-          if valid_json?(response.body)
-            # ok
-          else
-            raise StandardError
-          end
+        begin
+          Socket.tcp(host, port, connect_timeout: 2) {}
+        rescue StandardError
+          redirect_to error_api_not_found_path
         end
-      rescue StandardError
-        logger.info "API server not reachable"
-        redirect_to error_api_not_found_path
-      end
 
     end #devmode
 

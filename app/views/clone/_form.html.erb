@@ -1,0 +1,211 @@
+<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.5.4/src/loadingoverlay.min.js" data-turbolinks-track="reload"></script>
+<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.5.4/extras/loadingoverlay_progress/loadingoverlay_progress.min.js" data-turbolinks-track="reload"></script>
+
+<div data-turbolinks="false">
+<%= form_tag({controller: "clone", action: "create"}, method: "post", remote: true, id: 'cloneform', class: "cloneform") %>
+
+      <div class="row">
+        <div class="col m12">
+        <div class="card blue-grey darken-1 white-text">
+        <div class="card-content">
+              <span class="card-title">Create Clone from Template</span>
+        Please provide new machine name and template to be cloned
+<div class="row">
+  <div class="input-field col s12">
+<%= select_tag :template, options_from_collection_for_select(@templates, "identifier", "identifier", params[:template]), prompt: "Select template" %>
+    <label>Machine to be cloned</label>
+  </div>
+</div>
+        <div class="row">
+        <div class="input-field col s12">
+          <%= text_field_tag :nickname %>
+          <label for="template">New machine name (identifier)</label>
+        </div>
+      </div>
+
+      <div class="row">
+      <p>
+        <%= check_box_tag :newsnapshot, id: "newsnapshot" %>
+        <label for="newsnapshot" style="color: white;">New snapshot before cloning?</label>
+      </p>
+    </div>
+
+          </div>
+          </div>
+      </div>
+    </div>
+
+<div class="row">
+  <div class="col m12">
+    <div class="card blue-grey darken-1 white-text">
+      <div class="card-content">
+          <div class="row">
+            <div class="col m9">
+              <span class="card-title">Additional Network Adapters</span>
+            </div>
+            <div class="col m3">
+              <a class="waves-effect waves-light btn right" id="add-adapter-button" href="#">Add</a>
+            </div>
+        </div>
+          Add additional NICs that are not covered by template
+          <div id="networkadapters" name="networkadapters">
+            <table id="adapter-list" class="centered">
+              <thead>
+                <tr>
+                    <th>Adapter Name</th>
+                    <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col m12">
+    <div class="card blue-grey darken-1 white-text">
+      <div class="card-content">
+          <div class="row">
+            <div class="col m9">
+              <span class="card-title">Additional DMI Properties</span>
+            </div>
+            <div class="col m3">
+              <a class="waves-effect waves-light btn right" id="add-dmi-button" href="#">Add</a>
+            </div>
+        </div>
+          Add additional DMI properties that are not covered by template
+          <div id="dmiproperties" name="dmiproperties">
+            <table id="property-list" class="centered">
+              <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                    <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col m12">
+    <div class="card blue-grey darken-1 white-text">
+      <div class="card-content">
+        <div class="row">
+          <div class="col m9">
+            <span class="card-title">RDP Accounts</span>
+          </div>
+          <div class="col m3">
+            <button id="new-rdp-prop" type="button" class="waves-effect waves-light btn right disabled">Add</button>
+          </div>
+        </div>
+          Could not add multiple RDP accounts at this time. However, we do create "global" RDP account.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col m12">
+    <div class="input-group">
+      <%= button_tag "Start build process", class: "waves-effect waves-light btn", id: "buildmachine" %>
+    </div>
+  </div>
+</div>
+<div id="hiddenfields" name="hiddenfields" style="display: none;"></div>
+</form>
+<div id="newadapter" class="modal">
+  <div class="modal-content">
+    <h4>New Network Adapter</h4>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="newadaptername" name="newadaptername" type="text" class="active validate" placeholder="Desired adapter name" />
+        <label for="newadapter">Adapter name</label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button id="addadapter" name="addadapter" class="modal-action modal-close waves-effect waves-green btn-flat">Add Adapter</button>
+  </div>
+</div>
+
+<div id="newdmi" class="modal">
+  <div class="modal-content">
+    <h4>New DMI Property</h4>
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="dmiproperty" name="dmiproperty" type="text" class="active validate" placeholder="Set DMI Property" />
+        <label for="dmiproperty">DMI Property</label>
+      </div>
+      <div class="input-field col s6">
+        <input id="dmivalue" name="dmivalue" type="text" class="active validate" placeholder="Set DMI property's value" />
+        <label for="dmivalue">Property value</label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button id="add-dmi-property" name="add-dmi-property" class="modal-action modal-close waves-effect waves-green btn-flat">Add Property</button>
+  </div>
+</div>
+
+  <br>
+  <script>
+      $( document ).on('turbolinks:load', function() {
+    $('select').material_select();
+    $('#newadapter').modal();
+    $('#newdmi').modal();
+
+    $('#add-adapter-button').click(function() {
+      $('#newadapter').modal('open');
+    });
+
+    $('#add-dmi-button').click(function() {
+      $('#newdmi').modal('open');
+    });
+
+    $('#addadapter').click(function() {
+      $('#adapter-list > tbody:last-child').append('<tr><td>' + document.getElementById('newadaptername').value + '</td><td><i class="material-icons">delete</i></td></tr>');
+
+      $('<input>').attr({ type: 'hidden', id: 'nichandle[]', name: 'nichandle[]', value: document.getElementById('newadaptername').value }).appendTo('#hiddenfields');
+    });
+
+    $('#buildmachine').click(function(){
+      $.ajax({
+      type: this.method,
+      url: this.action,
+      data: $(this).serialize(),
+      success: function(){
+        var showLoadingText = $("<div>", {
+          id: "countdown",
+          css: {
+          "font-size" : "21px",
+          "padding-top": "170px"
+        },
+        text: "Sit back and grab a coffee. Cloning machine..."
+});
+
+        $.LoadingOverlay('show', {custom: showLoadingText})
+      }
+    });
+    });
+
+
+    $('#add-dmi-property').click(function() {
+      $('#property-list > tbody:last-child').append('<tr><td>' + document.getElementById('dmiproperty').value + '</td><td>' + document.getElementById('dmivalue').value + '</td><td><i class="material-icons">delete</i></td></tr>');
+
+    $('<input>').attr({ type: 'hidden', id: 'dmiproperty[' + document.getElementById("dmiproperty").value + ']', name: 'dmiproperty[' + document.getElementById("dmiproperty").value + ']', value: document.getElementById('dmivalue').value }).appendTo('#hiddenfields');
+    });
+  });
+  </script>
+</div>

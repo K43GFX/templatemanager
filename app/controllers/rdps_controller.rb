@@ -4,13 +4,19 @@ class RdpsController < ApplicationController
   end
 
   def show
-    auth = Rdp.find(params['account'])
-    host = "i-dev.itcollege.ee:#{@machine.vrdeport}"
+    if @machine.vrdeport.present?
+      auth = Rdp.find(params['account'])
+      host = "i-dev.itcollege.ee:#{@machine.vrdeport}"
 
-    @command = "rdesktop -u #{auth.rdpuser} -p#{auth.rdpsecret} #{host}"
+      @command = "rdesktop -u #{auth.rdpuser} -p#{auth.rdpsecret} #{host}"
 
-    respond_to do |format|
-      format.js
+      respond_to do |format|
+        format.js
+      end
+    else
+      respond_to do |format|
+        format.js { render :template => "rdps/rdpdown" }
+      end
     end
   end
 

@@ -7,7 +7,7 @@ class Rdp
 
   @@apiserver = "http://#{Setting.first.apiserver}:#{Setting.first.apiport}"
 
-  # Sets the state of virtual machine
+  # Creates RDP user for VM
   def deploy
     request = Http.put("#{@@apiserver}/machine/#{self.VM.identifier}", { "rdp-username" => self.rdpuser, "rdp-password" => self.rdpsecret })
     json = JSON.parse(request.body)
